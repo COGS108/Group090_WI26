@@ -161,6 +161,3 @@ cython_debug/
 
 # MacOS
 .DS_Store
-
-# Prevents /data/ from being kept in git
-data/**
