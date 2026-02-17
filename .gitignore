@@ -161,3 +161,9 @@ cython_debug/
 
 # MacOS
 .DS_Store
+
+# config folder
+.vscode/
+
+# Dont need to accidentally upload 1gb of helm data to github
+temp/
