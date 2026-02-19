@@ -75,7 +75,6 @@ epoch = epoch.drop([
     "Training code accessibility", # could compare open-source to closed-source models?
     "Training compute lower bound", # unknown how many have this var
     "Training compute upper bound", # same as lower bound
-    "Training hardware", # Additional stat?
     "Training power draw (W)", # No unit given, if we can determine.
     "Training time (hours)", # No metric
 

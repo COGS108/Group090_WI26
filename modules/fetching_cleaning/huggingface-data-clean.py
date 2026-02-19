@@ -6,7 +6,6 @@ generate_files = False
 src = "./data/Input/huggingface/formatted.json"
 temp_dir = "./data/temp/"
 output_dir = "./data/Output/"
-individual_scores = False # This keeps dictionaries of each test, e.g. ifeval, gqpa, mmlu, math. Average score kept regardless.
 
 # Open raw from src
 hf = pl.read_json(src).lazy()
@@ -23,7 +22,6 @@ hf = hf.drop([
     "is_flagged",
     "is_merged",
     "is_not_available_on_hub",
-    "precision",
     "sha",
 
 
@@ -51,17 +49,6 @@ if generate_files:
 # expand params_billions to parameters (to match epoch dataset)
 hf = hf.with_columns((pl.col("params_billions") * 1000000000).alias("parameters")).drop("params_billions")
 
-# Drop individual score columns if individual_scores is False
-if not individual_scores:
-    hf = hf.drop([
-        "bbh",
-        "gpqa",
-        "ifeval",
-        "math",
-        "mmlu_pro",
-        "musr",
-    ])
-
 # Add column with model name without contributor
 hf = hf.with_columns((pl.col("name").str.split("/").list.get(-1)).alias("model"))
 
@@ -71,7 +58,14 @@ hf = hf.group_by("model").agg([
     pl.col("average_score").mean(), 
     pl.col("co2_cost").mean(),
     pl.col("parameters").mean(),
+    pl.col("precision").first(),
     pl.col("name"), 
+    pl.col("bbh").mean(),
+    pl.col("gpqa").mean(),
+    pl.col("ifeval").mean(),
+    pl.col("math").mean(),
+    pl.col("mmlu_pro").mean(),
+    pl.col("musr").mean(),
 ])
 
 hf.sort(["architecture", "model"]).sink_ndjson(f"{output_dir}hf_parameters_co2.ndjson")
