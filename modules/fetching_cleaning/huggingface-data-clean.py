@@ -60,12 +60,12 @@ hf = hf.group_by("model").agg([
     pl.col("parameters").mean(),
     pl.col("precision").first(),
     pl.col("name"), 
-    pl.col("bbh").mean(),
-    pl.col("gpqa").mean(),
-    pl.col("ifeval").mean(),
-    pl.col("math").mean(),
-    pl.col("mmlu_pro").mean(),
-    pl.col("musr").mean(),
+    pl.col("bbh"),
+    pl.col("gpqa"),
+    pl.col("ifeval"),
+    pl.col("math"),
+    pl.col("mmlu_pro"),
+    pl.col("musr"),
 ])
 
 hf.sort(["architecture", "model"]).sink_ndjson(f"{output_dir}hf_parameters_co2.ndjson")
