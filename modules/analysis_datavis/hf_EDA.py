@@ -6,7 +6,6 @@ import seaborn as sns
 
 # Plot if true, makes the benchmark plots stacked if true
 make_plots = True
-stacked_bench = True
 
 # load hf dataset
 src = "./data/Output/hf_parameters_co2.ndjson"
@@ -66,10 +65,6 @@ with pl.Config(tbl_cols=100):
     print("Correlation Matrix for Numerical Variables")
     print(corr_df)
 
-# Stop here if not generating plots (saves me from closing windows at runtime)
-if not make_plots:
-    exit()
-
 co2 = hf.select("co2_cost").to_numpy().flatten()
 
 # generate plots to look at co2_cost
@@ -91,8 +86,10 @@ axs[3].set_title('log_co2 outliers')
 
 
 # This code below generates benchmark to co2 subplots, vertically.
-fig, axs = plt.subplots(len(x_vars), figsize=(6, 12))
+fig, axs = plt.subplots(len(x_vars), 2, figsize=(12, 24))
+axs = axs.flatten(order="F")
 axs[0].set_title("benchmarks : co2_cost")
+axs[7].set_title("benchmarks : log_co2")
 for var in range(len(x_vars)):
     x = hf.select(x_vars[var]).to_numpy().flatten()
     m, b = np.polyfit(x, co2, 1)
@@ -100,7 +97,19 @@ for var in range(len(x_vars)):
     axs[var].scatter(hf.select(x_vars[var]).to_numpy(), co2, alpha=0.5)
     axs[var].plot(regline, m*regline+b, color="black")
     axs[var].set_xlabel(x_vars[var])
-    axs[var].set_ylabel(f"{x_vars[var]}")
+    axs[var].set_ylabel(f"co2_cost")
+
+for var in range(len(x_vars)):
+    x = hf.select(x_vars[var]).to_numpy().flatten()
+    m, b = np.polyfit(x, log, 1)
+    regline = np.linspace(x.min(), x.max())
+    axs[var+len(x_vars)].scatter(hf.select(x_vars[var]).to_numpy(), log, alpha=0.5)
+    axs[var+len(x_vars)].plot(regline, m*regline+b, color="black")
+    axs[var+len(x_vars)].set_xlabel(x_vars[var])
+    axs[var+len(x_vars)].set_ylabel(f"log_co2")
+
+print("List of architectures in HuggingFace Dataset")
+print(hf.select(pl.col("architecture")).unique().sort(by="architecture").to_numpy())
 
 # Catagorical Variable analysis
 fig, axs = plt.subplots(1, 6, figsize=(12, 6))
@@ -123,4 +132,3 @@ for cat in range(len(precision)):
 
 plt.tight_layout()
 plt.show()
-
