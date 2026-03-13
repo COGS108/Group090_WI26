@@ -8,14 +8,7 @@ import numpy as np
 import pandas as pd
 import polars as pl
 
-DEFAULT_HF_BENCHMARKS: tuple[str, ...] = (
-    "bbh",
-    "gpqa",
-    "ifeval",
-    "math",
-    "mmlu_pro",
-    "musr",
-)
+from modules.constants import HF_BENCHMARKS as DEFAULT_HF_BENCHMARKS
 
 
 def load_epoch_processed(path: str = "data/02-processed/epoch_ai_parameters.ndjson") -> pd.DataFrame:

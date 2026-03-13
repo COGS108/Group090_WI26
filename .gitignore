@@ -165,5 +165,5 @@ cython_debug/
 # config folder
 .vscode/
 
-# Dont need to accidentally upload 1gb of helm data to github
-temp/
+# Don't accidentally upload the HELM intermediate dump to GitHub.
+data/01-interim/helm_temp/

@@ -1,1 +1,0 @@
-Added to sync this directory. Delete after this folder has data.
