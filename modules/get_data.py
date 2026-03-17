@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import polars as pl
 
-from modules.constants import HF_BENCHMARKS as DEFAULT_HF_BENCHMARKS
+from constants import HF_BENCHMARKS as DEFAULT_HF_BENCHMARKS
 
 
 def load_epoch_processed(path: str = "data/02-processed/epoch_ai_parameters.ndjson") -> pd.DataFrame:
@@ -48,4 +48,29 @@ def load_hf_for_eda(
     hf = hf.drop_nulls(pl.selectors.matches("co2_cost|_value")).collect()
 
     x_vars = ["parameters"] + [f"{bench}_value" for bench in benchmarks]
+    return hf, x_vars
+
+def load_hf_for_analysis(
+    path: str = "data/02-processed/hf_parameters_co2.ndjson",
+    benchmarks: Sequence[str] = DEFAULT_HF_BENCHMARKS,
+) -> tuple[pl.DataFrame, list[str]]:
+    """Load and normalize benchmark columns for HuggingFace Analysis."""
+    hf = pl.scan_ndjson(path)
+
+    for bench in benchmarks:
+        hf = hf.with_columns(pl.col(bench).list.first().alias(bench))
+        hf = hf.unnest(bench, separator="_")
+
+    hf = hf.drop([col for col in hf.collect_schema().names() if "_name" in col])
+    hf = hf.drop_nulls(pl.selectors.matches("co2_cost|_value")).collect()
+
+    x_vars = ["parameters"] + [f"{bench}_value" for bench in benchmarks]
+
+    hf = hf.with_columns([
+        pl.col("co2_cost").log1p().alias("log_co2"),
+        pl.col("parameters").log1p().alias("log_param"),
+    ]).drop_nans()
+
+    x_vars = x_vars + ["average_score", "log_param"]
+
     return hf, x_vars
