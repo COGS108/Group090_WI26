@@ -1,17 +1,18 @@
-This is your group repo for your final project for COGS108.
+# Diminishing Returns in AI Model CO₂ Cost
 
-This repository is private, and is only visible to the course instructors and your group mates; it is not visible to anyone else.
+**COGS 108 - Final Project** | Winter 2026
 
-Template notebooks for each component are provided. The numbers on the notebook filenames provides the order things are due.  See the syllabus for the due dates in your quarter.
+## Overview
 
-You will be graded based solely on the numbered Jupyter notebooks in this repository.  You will recieve your grade and feedback on how to improve via GitHub Issues on this repository. 
+This project investigates whether improvements in AI model benchmark performance exhibit diminishing returns in CO₂ emissions. We analyze 4,465 HuggingFace models and 1,403 Epoch AI models to determine whether environmental cost is driven by model scale (parameters) or accuracy gains (benchmark scores).
 
-We have created a suggested organization for your repo, including directory structures for storing `./data`, `./results`, and for creating `./modules` that your notebooks can import. 
+**Key Findings:** Model parameters exhibit diminishing returns on CO₂ cost, while benchmark scores add negligible independent explanatory power after controlling for scale. Reducing AI's carbon footprint requires architectural efficiency, not just parameter scaling.
 
-Its worth noting that `./data` is for storing local copies of the data, but by default this repo is configured to **not** allow you to store common datafiles in GitHub.  This is because GitHub has low limits on maximum file and repo size.  So instead you would download your data direct from its original provider or from your personal cloud storage. There are scripts inside some of the notebooks to download data from any URL to `./data`.  If you wish to remove this limitation and store small data files directly in your GitHub you should edit your `.gitignore` file.
+## Team & Contributions
 
-But this is *your* repo. You are free to manage the repo as you see fit, edit this README, add data files anywhere you want, etc. So long as there are the four numbered Jupyter notebooks in place on the due dates with the required information, the rest is up to you. 
-
-At the final project date there is an option to make your final project visible to others.  If you choose this option your repo will become publicly visible. 
-
-Also, you are encouraged to share this project after the course and to add it to your portfolio. If your repo is public you may fork it. If it is private you may follow [these instructions](https://docs.google.com/document/d/1_PP-vlsyWjNegGGsmeDB5B-ltjYW1Db14q9dx3HM9e4/edit?usp=sharing)
+| Member | Contributions |
+|--------|---------------|
+| [Kenric Hoang](https://github.com/kemp-ty) | Conceptualization, Data curation, Writing - original draft, Video - recording |
+| [Deborah Kim](https://github.com/Deborah623-Kim) | Conceptualization, Writing - original draft, Video - slides |
+| [Andy Tang](https://github.com/Tangled644) | Methodology, Software, Visualization, Writing - review & editing, Video - slides |
+| [Aidan Tjon](https://github.com/atjon) | Software, Project Admin, Investigation, Writing - original draft, Video - recording |
